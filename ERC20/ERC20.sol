@@ -37,8 +37,8 @@ interface IERC20{
 //Implementación de las funciones del token ERC20
 contract ERC20Basic is IERC20{
 
-    string public constant name = "ERC20";
-    string public constant symbol = "ERC";
+    string public constant name = "TCS20";
+    string public constant symbol = "TCS";
     uint8 public constant decimals = 18;
 
 

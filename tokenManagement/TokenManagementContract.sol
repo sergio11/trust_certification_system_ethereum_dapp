@@ -37,7 +37,7 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
         token.increaseTotalSupply(_tokenCount);
     }
     
-    function buyTokens(uint _tokenCount)  public override payable {
+    function buyTokens(uint _tokenCount) public override payable {
         require (_tokenCount <= balanceOf(), "The transaction cannot be completed the requested amount of tokens cannot be satisfied");
         uint tokenCost = getTokenPriceInWeis(_tokenCount);
         require(msg.value >= tokenCost, "Insufficient amount to buy tokens");
