@@ -82,6 +82,10 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
         && ICertificationAuthorityContract(certificationAuthorityContractAddr).isCertificationAuthorityEnabled(certificationCourse[_id].certificationAuthority);
     }
     
+    function getCertificateCourseDetail(string memory _id) external view override CertificationCourseMustExist(_id) returns (CertificationCourseRecord memory) {
+         return certificationCourse[_id];
+    }
+    
     function isCertificationCourseExists(string memory _id) external view override CertificationCourseMustExist(_id) returns (bool) {
         return certificationCourse[_id].isExist;
     }
