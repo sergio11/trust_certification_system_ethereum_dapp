@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 interface ITrustCertificationContract { 
     
-    function issueCertificate(address _recipientAddress, string memory _certificateCourseId, uint _qualification) external returns(string memory);
+    function issueCertificate(address _recipientAddress, string memory _certificateCourseId, uint _qualification, string memory _cid) external returns(string memory);
     function renewCertificate(string memory _id) external;
     function enableCertificate(string memory _id) external;
     function disableCertificate(string memory _id) external;
@@ -22,6 +22,7 @@ interface ITrustCertificationContract {
         uint256 expirationDate;
         uint qualification;
         uint durationInHours;
+        string cid;
         uint256 expeditionDate;
         bool isVisible;
         bool isEnabled;
@@ -29,10 +30,10 @@ interface ITrustCertificationContract {
     } 
 
     // Events
-    event OnNewCertificateGenerated(string _id);
-    event OnCertificateRenewed(string _id);
-    event OnCertificateDeleted(string _id);
-    event OnCertificateEnabled(string _id);
-    event OnCertificateDisabled(string _id);
+    event OnNewCertificateGenerated(string _id, bool _isVisible);
+    event OnCertificateRenewed(string _id, bool _isVisible);
+    event OnCertificateDeleted(string _id, bool _isVisible);
+    event OnCertificateEnabled(string _id, bool _isVisible);
+    event OnCertificateDisabled(string _id, bool _isVisible);
     event OnCertificateVisibilityUpdated(string _id, bool _isVisible);
 }
