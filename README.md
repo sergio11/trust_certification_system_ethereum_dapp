@@ -3,7 +3,7 @@
 <img width="auto" align="left" src="./tcs_logo.jpg" />
 
 Decentralized application designed to guarantee the transparency, traceability, security and truthfulness of the certificates issued by certification authorities.
-This DApp has been deployed in a private Ethereum-based blockchain network as part of the Trust Certification System Platform project, therefore a faucet mechanism has been implemented as a source of ETH revenue issuance.
+This DApp has been deployed in a private Ethereum-based blockchain network as part of the [Trust Certification System Platform project](https://github.com/sergio11/trust_certification_system_blockchain), therefore a faucet mechanism has been implemented as a source of ETH revenue issuance.
 
 It implements its own ERC-20 token called TCS used as a transmission currency to carry out the different operations on the DApp.
 
