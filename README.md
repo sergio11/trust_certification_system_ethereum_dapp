@@ -1,4 +1,4 @@
-# trust_certification_system_blockchain
+# Trust certification system decentralized application
 
 
 ## UML Design Diagram
