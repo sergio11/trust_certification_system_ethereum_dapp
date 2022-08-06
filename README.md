@@ -1,5 +1,8 @@
 # Trust certification system decentralized application
 
+## Main Components
+
+## Main Goals
 
 ## UML Design Diagram
 
