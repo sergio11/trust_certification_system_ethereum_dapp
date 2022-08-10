@@ -10,7 +10,7 @@ It implements its own ERC-20 token called TCS used as a transmission currency to
 It has been implemented using the Solidity programming language in the Remix IDE development environment.
 
 
-<img width="auto" src="./diagrams/dapp_diagram.drawio.png" />
+<img width="500px" src="./diagrams/dapp_diagram.drawio.png" />
 
 ## Main features of TCS ERC-20 tokens
 
