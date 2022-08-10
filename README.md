@@ -21,27 +21,31 @@ It has been implemented using the Solidity programming language in the Remix IDE
 
 ### TCS Token Management Contract
 
-<img width="auto" src="./screenshots/capture_1.PNG" />
+<img width="auto" src="./diagrams/token_management_contract.svg" />
 
 ### Ether Faucet Contract
 
-<img width="auto" src="./screenshots/capture_2.PNG" />
+<img width="auto" src="./diagrams/faucet_diagram.svg" />
 
 ### Trust Certification Contract
 
-<img width="auto" src="./screenshots/capture_3.PNG" />
+<img width="auto" src="./diagrams/trust_certification_diagram.svg" />
 
 ### Certification Authority Contract
 
-<img width="auto" src="./screenshots/capture_4.PNG" />
+<img width="auto" src="./diagrams/certification_authority_diagram.svg" />
+
+### TCS ETH-20 token
+
+<img width="auto" src="./diagrams/erc20_diagram.svg" />
 
 ### Certification Course Contract
 
-<img width="auto" src="./screenshots/capture_5.PNG" />
-<img width="auto" src="./screenshots/capture_6.PNG" />
+<img width="auto" src="./diagrams/certification_course_diagram.svg" />
+
 
 ## Main Goals
 
 ## UML Design Diagram
 
-<img width="auto" src="./contracts_uml_diagram.svg" />
+<img width="auto" src="./diagrams/dapp_uml_diagram.svg" />
