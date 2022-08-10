@@ -9,6 +9,9 @@ It implements its own ERC-20 token called TCS used as a transmission currency to
 
 It has been implemented using the Solidity programming language in the Remix IDE development environment.
 
+
+<img width="auto" src="./diagrams/dapp_diagram.drawio.png" />
+
 ## Main features of TCS ERC-20 tokens
 
 * It has a name or identifier and an associated symbol. Through these two values, it is possible to identify and differentiate these tokens from others within the Ethereum blockchain.
