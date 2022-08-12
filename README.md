@@ -19,8 +19,9 @@ The decentralized application is based on a set of smart contracts that interact
 
 * This application has been designed and developed to be deployed on a private Ethereum blockchain, therefore a Faucet mechanism has been implemented to provide funds in ETH for the wallets that operate with the application.
 * The application uses tokens TCS that follows the ERC-20 standard in order to manage the fee of information registration operations in the blockchain.
+* The CAs will be the entities authorized to register courses and issue digital certificates.
 
-<img width="400px" src="./diagrams/dapp_diagram.drawio.png" />
+<img width="400px"  src="./diagrams/dapp_diagram.drawio.png" />
 
 ## Main Components
 
