@@ -5,13 +5,11 @@
 Decentralized application designed to guarantee the transparency, traceability, security and truthfulness of the certificates issued by certification authorities.
 This DApp has been deployed in a private Ethereum-based blockchain network as part of the [Trust Certification System Platform project](https://github.com/sergio11/trust_certification_system_blockchain), therefore a faucet mechanism has been implemented as a source of ETH revenue issuance.
 
-It implements its own ERC-20 token called TCS used as a transmission currency to carry out the different operations on the DApp.
+It implements its own ERC-20 token called TCS used as a transmission currency to carry out the different operations in the DApp.
 
 It has been implemented using the Solidity programming language in the Remix IDE development environment.
 
-
-<img width="500px" src="./diagrams/dapp_diagram.drawio.png" />
-
+<img width="400px" src="./diagrams/dapp_diagram.drawio.png" />
 
 ## Main Components
 
@@ -63,20 +61,25 @@ If a smart contract implements the following methods and events, an ERC-20 token
 
 <img width="auto" src="./diagrams/erc20_diagram.svg" />
 
-### Trust Certification Contract
-
-<img width="auto" src="./diagrams/trust_certification_diagram.svg" />
-
 ### Certification Authority Contract
+
+Smart Contract in charge of registering the certification authorities enabled for the creation of courses and issuance of digital certificates.
+
+Registration operations have a cost in ERC-20 TCS tokens, it delegates into the Faucet ERC-20 TCS contract to manage the operations with the tokens.
 
 <img width="auto" src="./diagrams/certification_authority_diagram.svg" />
 
-
-
 ### Certification Course Contract
+
+Smart contract that manages the courses registered by the CAs enabled to issue digital certificates.
+
+The creation of a new course through this smart contract has an extra cost in ERC-20 TCS tokens, these operations are managed using the Faucet ERC-20 TCS contract.
 
 <img width="auto" src="./diagrams/certification_course_diagram.svg" />
 
+### Trust Certification Contract
+
+<img width="auto" src="./diagrams/trust_certification_diagram.svg" />
 
 ## Main Goals
 
