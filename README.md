@@ -11,6 +11,8 @@ It has been implemented using the Solidity programming language in the Remix IDE
 
 <img width="400px" src="./diagrams/dapp_diagram.drawio.png" />
 
+## Main Goals
+
 ## Main Components
 
 ### Ether Faucet Contract
@@ -38,7 +40,7 @@ Faucet contract to dispense an ERC20 token called TCS. ERC20 token faucets are s
 
 <img width="auto" src="./diagrams/token_management_contract.svg" />
 
-### TCS ETH-20 token
+### TCS ERC-20 token
 
 The ERC-20 (Ethereum Request for Comments 20), proposed by Fabian Vogelsteller in November 2015, is a token standard that implements an API for tokens within smart contracts.
 
@@ -79,10 +81,12 @@ The creation of a new course through this smart contract has an extra cost in ER
 
 ### Trust Certification Contract
 
+Smart contract that manages digital certificates issued by CAs to usersinterested.
+
 <img width="auto" src="./diagrams/trust_certification_diagram.svg" />
 
-## Main Goals
-
 ## UML Design Diagram
+
+Complete UML diagram of decentralized application design.
 
 <img width="auto" src="./diagrams/dapp_uml_diagram.svg" />
