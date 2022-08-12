@@ -47,6 +47,21 @@ Faucet contract to dispense an ERC20 token called TCS. ERC20 token faucets are s
 
 <img width="auto" src="./diagrams/token_management_contract.svg" />
 
+### TCS ETH-20 token
+
+The ERC-20 (Ethereum Request for Comments 20), proposed by Fabian Vogelsteller in November 2015, is a token standard that implements an API for tokens within smart contracts.
+
+Functionalities provided by ERC-20:
+
+* Transfer tokens from one account to another.
+* Get the current token balance of an account.
+* Get the total supply of the token available on the network.
+* Approve whether a number of tokens from one account can be spent with a third-party account.
+
+If a smart contract implements the following methods and events, an ERC-20 token contract can be called, and once implemented, it will be responsible for keeping track of the tokens created on Ethereum.
+
+<img width="auto" src="./diagrams/erc20_diagram.svg" />
+
 ### Trust Certification Contract
 
 <img width="auto" src="./diagrams/trust_certification_diagram.svg" />
@@ -55,9 +70,7 @@ Faucet contract to dispense an ERC20 token called TCS. ERC20 token faucets are s
 
 <img width="auto" src="./diagrams/certification_authority_diagram.svg" />
 
-### TCS ETH-20 token
 
-<img width="auto" src="./diagrams/erc20_diagram.svg" />
 
 ### Certification Course Contract
 
