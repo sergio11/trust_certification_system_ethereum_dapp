@@ -28,6 +28,14 @@ It has been implemented using the Solidity programming language in the Remix IDE
 
 ### Ether Faucet Contract
 
+Faucet contract that dispenses ETH when a user makes a request. Just like small drops of water dripping from a faucet a crypto faucet drips amounts of ETH to requestors.
+
+* Contract has an owner that can be changed.
+* Has a configurable amount of ETH to dispense to each requested wallet.
+* Supports donations to the faucet (this operation only could be made by contract owner).
+* Keeps track of addresses requesting ETH.
+* Requesters can request WITH only one time although contract owner could send funds to whatever wallet as much as he wants.
+
 <img width="auto" src="./diagrams/faucet_diagram.svg" />
 
 ### Trust Certification Contract
