@@ -22,10 +22,6 @@ It has been implemented using the Solidity programming language in the Remix IDE
 
 ## Main Components
 
-### TCS Token Management Contract
-
-<img width="auto" src="./diagrams/token_management_contract.svg" />
-
 ### Ether Faucet Contract
 
 Faucet contract that dispenses ETH when a user makes a request. Just like small drops of water dripping from a faucet a crypto faucet drips amounts of ETH to requestors.
@@ -37,6 +33,19 @@ Faucet contract that dispenses ETH when a user makes a request. Just like small 
 * Requesters can request WITH only one time although contract owner could send funds to whatever wallet as much as he wants.
 
 <img width="auto" src="./diagrams/faucet_diagram.svg" />
+
+### TCS Token Management Contract
+
+Faucet contract to dispense an ERC20 token called TCS. ERC20 token faucets are similar in concept to the contract above but their contract structure IS different. The ERC20 faucet contract below contains the following features:
+
+* Unlike the contract above the contract below creates an ERC20 token.
+* It provide a name and an symbol for the token.
+* It inherits all of the functions of standard ERC20 contract definition.
+* The owner mints tokens in the constructor.
+* It keeps track of addresses requesting the ERC20 token.
+* Requestors can buy the ERC20 token in exchange of ETH in order to can operate with others Smart Contracts.
+
+<img width="auto" src="./diagrams/token_management_contract.svg" />
 
 ### Trust Certification Contract
 
