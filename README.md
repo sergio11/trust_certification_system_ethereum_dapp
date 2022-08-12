@@ -9,9 +9,18 @@ It implements its own ERC-20 token called TCS used as a transmission currency to
 
 It has been implemented using the Solidity programming language in the Remix IDE development environment.
 
-<img width="400px" src="./diagrams/dapp_diagram.drawio.png" />
+<img align="left" src="https://img.shields.io/badge/Solidity-2E8B57?style=for-the-badge&logo=solidity&logoColor=white" />
+<img align="left" src="https://img.shields.io/badge/Ethereum-8B0000?style=for-the-badge&logo=Ethereum&logoColor=white" />
+<img align="center" src="https://img.shields.io/badge/-Smart%20Contracts-8B0000?style=for-the-badge" />
 
 ## Main Goals
+
+The decentralized application is based on a set of smart contracts that interact with each other in order to guarantee the security and reliability of the information stored.
+
+* This application has been designed and developed to be deployed on a private Ethereum blockchain, therefore a Faucet mechanism has been implemented to provide funds in ETH for the wallets that operate with the application.
+* The application uses tokens TCS that follows the ERC-20 standard in order to manage the fee of information registration operations in the blockchain.
+
+<img width="400px" src="./diagrams/dapp_diagram.drawio.png" />
 
 ## Main Components
 
