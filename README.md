@@ -12,13 +12,6 @@ It has been implemented using the Solidity programming language in the Remix IDE
 
 <img width="500px" src="./diagrams/dapp_diagram.drawio.png" />
 
-## Main features of TCS ERC-20 tokens
-
-* It has a name or identifier and an associated symbol. Through these two values, it is possible to identify and differentiate these tokens from others within the Ethereum blockchain.
-* It is capable of managing the basic economic aspects of its issue. Data such as the decimal precision system and the total emission are a fundamental part of the token in its data structure.
-* It manages an interface to control and review the balances of the addresses of its owners. By this means, the token is able to report the total balance of funds contained in a specific address.
-* It can handle the transfer system natively. This is because the token has functions to handle fund transfers.
-* Additionally, the token is capable of autonomously handling partial withdrawals of funds from one address.
 
 ## Main Components
 
@@ -57,6 +50,14 @@ Functionalities provided by ERC-20:
 * Get the current token balance of an account.
 * Get the total supply of the token available on the network.
 * Approve whether a number of tokens from one account can be spent with a third-party account.
+
+Main features of TCS ERC-20 tokens
+
+* It has a name or identifier and an associated symbol. Through these two values, it is possible to identify and differentiate these tokens from others within the Ethereum blockchain.
+* It is capable of managing the basic economic aspects of its issue. Data such as the decimal precision system and the total emission are a fundamental part of the token in its data structure.
+* It manages an interface to control and review the balances of the addresses of its owners. By this means, the token is able to report the total balance of funds contained in a specific address.
+* It can handle the transfer system natively. This is because the token has functions to handle fund transfers.
+* Additionally, the token is capable of autonomously handling partial withdrawals of funds from one address.
 
 If a smart contract implements the following methods and events, an ERC-20 token contract can be called, and once implemented, it will be responsible for keeping track of the tokens created on Ethereum.
 
