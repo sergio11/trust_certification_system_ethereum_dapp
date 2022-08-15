@@ -9,6 +9,7 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
     
     // Cost of Add CA in TCS ERC-20 tokens 
     uint8 private constant ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS = 5;
+    uint8 private constant DEFAULT_COST_OF_ISSUING_CERTIFICATE = 4;
     
     address private tokenManagementAddr;
     mapping(address => CertificationAuthorityRecord) private certificationAuthorities;
@@ -23,6 +24,15 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
         require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, address(this), ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS), "The transfer could not be made");
         certificationAuthorities[msg.sender] = CertificationAuthorityRecord(_name, _defaultCostOfIssuingCertificate, true, true);
         emit OnNewCertificationAuthorityCreated(msg.sender, _name);
+    }
+
+    function addCertificationAuthority(string memory _name) external override CertificationAuthorityMustNotExist(msg.sender) {
+        this.addCertificationAuthority(_name, DEFAULT_COST_OF_ISSUING_CERTIFICATE);
+    }
+
+    function updateCertificationAuthority(uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustExist(msg.sender) {
+        certificationAuthorities[msg.sender].defaultCostOfIssuingCertificate = _defaultCostOfIssuingCertificate;
+        emit OnCertificationAuthorityUpdated(msg.sender, _defaultCostOfIssuingCertificate);
     }
     
     function removeCertificationAuthority(address _address) external override onlyOwner() CertificationAuthorityMustExist(_address) { 
