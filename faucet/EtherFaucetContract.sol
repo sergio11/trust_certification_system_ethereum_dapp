@@ -10,28 +10,25 @@ contract EtherFaucetContract is Ownable {
     
     // events
     event OnDeposit(address sender, uint amount);
-    event OnGetSeedFunds(address sender, uint amount);
+    event OnSendSeedFunds(address sender, address account, uint amount);
+    event OnSendFunds(address account, uint amount);
     
-    
+
     // Public API
     function deposit() public onlyOwner payable returns(bool success) {
         emit OnDeposit(msg.sender, msg.value);
         return true;
     }
 
-    function getSeedFunds() public shouldBeHaveFunds accountHasNotAlreadyFunded(msg.sender)  {
-        msg.sender.transfer(topupAmountInEthers);
-        accountsAlreadyFunded[msg.sender] = true;
-        emit OnGetSeedFunds(msg.sender, topupAmountInEthers);
-    }
-
-    function sendSeedFundsTo(address payable account) public onlyOwner shouldBeHaveFunds {
+    function sendSeedFundsTo(address payable account) public onlyOwner shouldBeHaveFunds accountHasNotAlreadyFunded(account) {
         account.transfer(topupAmountInEthers);
-        emit OnGetSeedFunds(account, topupAmountInEthers);
+        accountsAlreadyFunded[account] = true;
+        emit OnSendSeedFunds(msg.sender, account, topupAmountInEthers);
     }
     
     function sendFunds(address payable account, uint amount) public onlyOwner shouldBeHaveFunds {
         account.transfer(amount);
+        emit OnSendFunds(account, amount);
     }
     
     // Modifiers

@@ -9,8 +9,8 @@ import "../certificationAuthority/ICertificationAuthorityContract.sol";
 
 contract CertificationCourseContract is Ownable, ICertificationCourseContract {
     
-    // constants
-    uint8 private constant COST_OF_ADD_CERTIFICATION_COURSE = 10;
+    // Cost of Adding certification course in TCS ERC-20 tokens
+    uint8 private constant ADD_CERTIFICATION_COURSE_COST_IN_TCS_TOKENS = 8;
     
     // Contracts references
     address private tokenManagementContractAddr;
@@ -38,8 +38,8 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
     
     function _addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) private returns(string memory) {
         uint _senderTokens = ITokenManagementContract(tokenManagementContractAddr).getTokens(msg.sender);
-        require(_senderTokens >= COST_OF_ADD_CERTIFICATION_COURSE, "You do not have enough tokens to register as Certification Course");
-        require(ITokenManagementContract(tokenManagementContractAddr).transfer(msg.sender, address(this), COST_OF_ADD_CERTIFICATION_COURSE), "The transfer could not be made");
+        require(_senderTokens >= ADD_CERTIFICATION_COURSE_COST_IN_TCS_TOKENS, "You do not have enough tokens to register as Certification Course");
+        require(ITokenManagementContract(tokenManagementContractAddr).transfer(msg.sender, address(this), ADD_CERTIFICATION_COURSE_COST_IN_TCS_TOKENS), "The transfer could not be made");
         
         if(_costOfIssuingCertificate == 0)
             _costOfIssuingCertificate = ICertificationAuthorityContract(certificationAuthorityContractAddr).getDefaultCostOfIssuingCertificate(msg.sender);

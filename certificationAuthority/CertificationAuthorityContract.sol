@@ -7,8 +7,8 @@ import "./ICertificationAuthorityContract.sol";
 
 contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContract {
     
-    
-    uint8 private constant COST_OF_ADD_CERTIFICATION_AUTHORITY = 20;
+    // Cost of Add CA in TCS ERC-20 tokens 
+    uint8 private constant ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS = 5;
     
     address private tokenManagementAddr;
     mapping(address => CertificationAuthorityRecord) private certificationAuthorities;
@@ -19,8 +19,8 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
     
     function addCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustNotExist(msg.sender) {
         uint _senderTokens = ITokenManagementContract(tokenManagementAddr).getTokens(msg.sender);
-        require(_senderTokens >= COST_OF_ADD_CERTIFICATION_AUTHORITY, "You do not have enough tokens to register as Certification Authority");
-        require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, address(this), COST_OF_ADD_CERTIFICATION_AUTHORITY), "The transfer could not be made");
+        require(_senderTokens >= ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS, "You do not have enough tokens to register as Certification Authority");
+        require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, address(this), ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS), "The transfer could not be made");
         certificationAuthorities[msg.sender] = CertificationAuthorityRecord(_name, _defaultCostOfIssuingCertificate, true, true);
         emit OnNewCertificationAuthorityCreated(msg.sender, _name);
     }

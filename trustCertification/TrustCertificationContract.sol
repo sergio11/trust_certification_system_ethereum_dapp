@@ -11,6 +11,8 @@ contract TrustCertificationContract is Ownable, ITrustCertificationContract {
     
     address private tokenManagementAddr;
     address private certificationCourseAddr;
+
+    uint8 constant DEFAULT_COST_OF_ISSUING_CERTIFICATE = 8;
     
     // Contract storage data
     mapping(string => CertificateRecord) private certificates;
