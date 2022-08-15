@@ -4,7 +4,8 @@ pragma experimental ABIEncoderV2;
 
 interface ITokenManagementContract {
     
-    function getTokenPriceInWeis(uint _tokenCount) external pure returns (uint);
+    function sendInitialTokenFundsTo(address payable account, ClientType clientType) external;
+    function getTokenPriceInWei(uint _tokenCount) external pure returns (uint);
     function buyTokens(uint _tokenCount) external payable;
     function balanceOf() external view returns (uint);
     function getMyTokens() external view returns (uint);
@@ -16,7 +17,11 @@ interface ITokenManagementContract {
     struct ClientRecord {
         uint tokensPurchasedCount;
         uint tokensAvailables;
+        ClientType clientType;
     }
+
+    // Client Type Structure
+    enum ClientType{ CA, STUDENT, ADMIN }
     
     
 }
