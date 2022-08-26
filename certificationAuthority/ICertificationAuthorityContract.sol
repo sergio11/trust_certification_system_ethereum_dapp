@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 interface ICertificationAuthorityContract {
     
     function addCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external;
-    function updateCertificationAuthority(uint _defaultCostOfIssuingCertificate) external;
+    function updateCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external;
     function addCertificationAuthority(string memory _name) external;
     function removeCertificationAuthority(address _address) external;
     function enableCertificationAuthority(address _address) external;
@@ -29,6 +29,6 @@ interface ICertificationAuthorityContract {
     event OnCertificationAuthorityRemoved(address _address);
     event OnCertificationAuthorityEnabled(address _address);
     event OnCertificationAuthorityDisabled(address _address);
-    event OnCertificationAuthorityUpdated(address _address, uint _defaultCostOfIssuingCertificate);
+    event OnCertificationAuthorityUpdated(address _address, string _name, uint _defaultCostOfIssuingCertificate);
     
 }

@@ -30,9 +30,10 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
         this.addCertificationAuthority(_name, DEFAULT_COST_OF_ISSUING_CERTIFICATE);
     }
 
-    function updateCertificationAuthority(uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustExist(msg.sender) {
+    function updateCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustExist(msg.sender) {
+        certificationAuthorities[msg.sender].name = _name;
         certificationAuthorities[msg.sender].defaultCostOfIssuingCertificate = _defaultCostOfIssuingCertificate;
-        emit OnCertificationAuthorityUpdated(msg.sender, _defaultCostOfIssuingCertificate);
+        emit OnCertificationAuthorityUpdated(msg.sender, _name, _defaultCostOfIssuingCertificate);
     }
     
     function removeCertificationAuthority(address _address) external override onlyOwner() CertificationAuthorityMustExist(_address) { 
