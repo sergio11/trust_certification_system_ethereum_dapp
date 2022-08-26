@@ -7,6 +7,7 @@ interface ICertificationCourseContract {
     
     function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours) external returns (string memory);
     function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external returns (string memory);
+    function updateCertificationCourse(string memory _id, string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external returns (string memory);
     function removeCertificationCourse(string memory _id) external;
     function enableCertificationCourse(string memory _id) external;
     function disableCertificationCourse(string memory _id) external;
@@ -39,6 +40,7 @@ interface ICertificationCourseContract {
     event OnCertificationCourseRemoved(string _id);
     event OnCertificationCourseEnabled(string _id);
     event OnCertificationCourseDisabled(string  _id);
+    event OnCertificationCourseUpdated(string  _id);
 }
 
 

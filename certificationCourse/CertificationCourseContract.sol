@@ -53,6 +53,18 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
         emit OnNewCertificationCourseCreated(_courseId);
         return _courseId;
     }
+
+    function updateCertificationCourse(string memory _id, string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external override CertificationCourseMustExist(_id) MustBeAValidCertificationAuthority(msg.sender) returns (string memory) {
+        certificationCourse[_id].name = _name;
+        certificationCourse[_id].costOfIssuingCertificate = _costOfIssuingCertificate;
+        certificationCourse[_id].durationInHours = _durationInHours;
+        certificationCourse[_id].expirationInDays = _expirationInDays;
+        certificationCourse[_id].canBeRenewed = _canBeRenewed;
+        certificationCourse[_id].costOfRenewingCertificate = _costOfRenewingCertificate;
+        // Emit course created event
+        emit OnCertificationCourseUpdated(_id);
+        return _id;
+    }
     
     function removeCertificationCourse(string memory  _id) external override CertificationCourseMustExist(_id) MustBeOwnerOfTheCourse(_id, msg.sender) { 
         delete certificationCourse[_id];
