@@ -25,7 +25,7 @@ The decentralized application is based on a set of smart contracts that interact
 
 ## How to deploy Trust Certification System DApp into a private Ethereum Blockchain Network
 
-[![How to deploy Trust Certification System DApp into a private Ethereum Blockchain Network](https://img.youtube.com/vi/4MVbN9TVx2Y/maxresdefault.jpg)](https://youtu.be/4MVbN9TVx2Y)
+[![How to deploy Trust Certification System DApp into a private Ethereum Blockchain Network](./diagrams/screenshot.PNG)](https://youtu.be/4MVbN9TVx2Y)
 
 ## Main Components
 
