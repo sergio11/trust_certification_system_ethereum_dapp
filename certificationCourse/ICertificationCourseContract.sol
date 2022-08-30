@@ -21,6 +21,8 @@ interface ICertificationCourseContract {
     function getExpirationDate(string memory _id) external view returns (uint);
     function getCertificateCourseDetail(string memory _id) external view returns (CertificationCourseRecord memory);
     function isYourOwner(string memory _id, address _certificationAuthority) external view returns (bool);
+    function getMyCertificationCourses() external view returns (CertificationCourseRecord[] memory);
+    function getAllCertificationCourses() external view returns (CertificationCourseRecord[] memory);
     
     // Data Structure
     struct CertificationCourseRecord {
