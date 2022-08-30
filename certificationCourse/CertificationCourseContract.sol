@@ -19,6 +19,7 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
     // Contract storage data
     mapping(string => CertificationCourseRecord) private certificationCourse;
     mapping(address => string[]) private certificationAuthorityCourses;
+    string[] private courseIds;
     
     function setCertificationAuthorityContractAddr(address _certificationAuthorityContractAddr) public payable onlyOwner() {
        certificationAuthorityContractAddr = _certificationAuthorityContractAddr;
@@ -49,6 +50,7 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
         certificationCourse[_courseId] = CertificationCourseRecord(_name, _costOfIssuingCertificate, _costOfRenewingCertificate,
             msg.sender, _durationInHours, _expirationInDays, _canBeRenewed,  true, true);
         certificationAuthorityCourses[msg.sender].push(_courseId);
+        courseIds.push(_courseId);
         // Emit course created event
         emit OnNewCertificationCourseCreated(_courseId);
         return _courseId;
@@ -67,7 +69,7 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
     }
     
     function removeCertificationCourse(string memory  _id) external override CertificationCourseMustExist(_id) MustBeOwnerOfTheCourse(_id, msg.sender) { 
-        delete certificationCourse[_id];
+        certificationCourse[_id].isExist = false;
         emit OnCertificationCourseRemoved(_id);
     }
     
@@ -129,6 +131,23 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
     
     function isYourOwner(string memory _id, address _certificationAuthority) public view override CertificationCourseMustExist(_id) returns (bool) {
         return certificationCourse[_id].certificationAuthority == _certificationAuthority;
+    }
+
+    function getAllCertificationCourses() public view override onlyOwner() returns (CertificationCourseRecord[] memory) {
+       CertificationCourseRecord[] memory  allCertificationCourses = new CertificationCourseRecord[](courseIds.length);
+        for (uint i=0; i < courseIds.length; i++) { 
+           allCertificationCourses[i] = certificationCourse[courseIds[i]];
+        }
+        return allCertificationCourses;
+
+    }
+
+    function getMyCertificationCourses() public view override MustBeAValidCertificationAuthority(msg.sender) returns (CertificationCourseRecord[] memory) {
+        CertificationCourseRecord[] memory  myCertificationCourses = new CertificationCourseRecord[](certificationAuthorityCourses[msg.sender].length);
+        for (uint i=0; i < certificationAuthorityCourses[msg.sender].length; i++) { 
+           myCertificationCourses[i] = certificationCourse[certificationAuthorityCourses[msg.sender][i]];
+        }
+        return myCertificationCourses;
     }
     
     // modifiers    
