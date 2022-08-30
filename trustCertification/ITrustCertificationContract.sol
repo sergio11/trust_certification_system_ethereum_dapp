@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 interface ITrustCertificationContract { 
     
-    function issueCertificate(address _recipientAddress, string memory _certificateCourseId, uint _qualification, string memory _cid) external returns(string memory);
+    function issueCertificate(address _recipientAddress, string memory _certificateCourseId, uint _qualification, string memory _cid, string memory _certificateHash) external returns(string memory);
     function renewCertificate(string memory _id) external;
     function enableCertificate(string memory _id) external;
     function disableCertificate(string memory _id) external;
@@ -13,6 +13,7 @@ interface ITrustCertificationContract {
     function getCertificateDetail(string memory _id) external view returns (CertificateRecord memory);
     function getMyCertificatesAsRecipient() external view returns (string[] memory);
     function getMyCertificatesAsIssuer() external view returns (string[] memory);
+    function validateCertificateIntegrity(string  memory _certificateHash) external view returns (bool);
     
     // Data Structure
     struct CertificateRecord {
@@ -23,6 +24,7 @@ interface ITrustCertificationContract {
         uint qualification;
         uint durationInHours;
         string cid;
+        string certificateHash;
         uint256 expeditionDate;
         bool isVisible;
         bool isEnabled;
