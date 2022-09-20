@@ -13,21 +13,27 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
     
     address private tokenManagementAddr;
     mapping(address => CertificationAuthorityRecord) private certificationAuthorities;
+    address[] private authoritiesRegistered;
     
     function setTokenManagementAddr(address _tokenManagementAddr) public payable onlyOwner() {
        tokenManagementAddr = _tokenManagementAddr;
     }
     
     function addCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustNotExist(msg.sender) {
+        _addCertificationAuthority(_name, _defaultCostOfIssuingCertificate);
+    }
+
+    function addCertificationAuthority(string memory _name) external override CertificationAuthorityMustNotExist(msg.sender) {
+        _addCertificationAuthority(_name, DEFAULT_COST_OF_ISSUING_CERTIFICATE);
+    }
+
+    function _addCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) private {
         uint _senderTokens = ITokenManagementContract(tokenManagementAddr).getTokens(msg.sender);
         require(_senderTokens >= ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS, "You do not have enough tokens to register as Certification Authority");
         require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, address(this), ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS), "The transfer could not be made");
         certificationAuthorities[msg.sender] = CertificationAuthorityRecord(_name, _defaultCostOfIssuingCertificate, true, true);
+        authoritiesRegistered.push(msg.sender);
         emit OnNewCertificationAuthorityCreated(msg.sender, _name);
-    }
-
-    function addCertificationAuthority(string memory _name) external override CertificationAuthorityMustNotExist(msg.sender) {
-        this.addCertificationAuthority(_name, DEFAULT_COST_OF_ISSUING_CERTIFICATE);
     }
 
     function updateCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustExist(msg.sender) {
@@ -37,7 +43,7 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
     }
     
     function removeCertificationAuthority(address _address) external override onlyOwner() CertificationAuthorityMustExist(_address) { 
-        delete certificationAuthorities[_address];
+        certificationAuthorities[_address].isExist = false;
         emit OnCertificationAuthorityRemoved(_address);
     }
     
@@ -69,6 +75,14 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
     
     function getCertificateAuthorityDetail() external view override CertificationAuthorityMustExist(msg.sender) returns (CertificationAuthorityRecord memory) {
          return certificationAuthorities[msg.sender];
+    }
+
+    function getAllCertificationAuthorities() external view override onlyOwner() returns (CertificationAuthorityRecord[] memory) {
+        CertificationAuthorityRecord[] memory allCertificationAuthorities = new CertificationAuthorityRecord[](authoritiesRegistered.length);
+        for (uint i=0; i < authoritiesRegistered.length; i++) { 
+           allCertificationAuthorities[i] = certificationAuthorities[authoritiesRegistered[i]];
+        }
+        return allCertificationAuthorities;
     }
      
     // Modifiers

@@ -2,31 +2,34 @@
 pragma solidity ^0.7.1;
 pragma experimental ABIEncoderV2;
 import "../ownable/Ownable.sol";
+import "./IEtherFaucetContract.sol";
 
-contract EtherFaucetContract is Ownable {
+contract EtherFaucetContract is Ownable, IEtherFaucetContract {
     
-    uint private topupAmountInEthers = 3 ether;
+    uint private initialAmountInEthers = 3 ether;
     mapping(address => bool) private accountsAlreadyFunded;
     
-    // events
-    event OnDeposit(address sender, uint amount);
-    event OnSendSeedFunds(address sender, address account, uint amount);
-    event OnSendFunds(address account, uint amount);
-    
-
     // Public API
-    function deposit() public onlyOwner payable returns(bool success) {
+    function deposit() public override onlyOwner payable returns(bool success) {
         emit OnDeposit(msg.sender, msg.value);
         return true;
     }
 
-    function sendSeedFundsTo(address payable account) public onlyOwner shouldBeHaveFunds accountHasNotAlreadyFunded(account) {
-        account.transfer(topupAmountInEthers);
+    function getInitialAmount() public override view onlyOwner returns(uint amount) {
+        return initialAmountInEthers;
+    }
+
+    function setInitialAmount(uint amount) public override onlyOwner {
+        initialAmountInEthers = amount;
+    }
+
+    function sendSeedFundsTo(address payable account) public override onlyOwner shouldBeHaveFunds accountHasNotAlreadyFunded(account) {
+        account.transfer(initialAmountInEthers);
         accountsAlreadyFunded[account] = true;
-        emit OnSendSeedFunds(msg.sender, account, topupAmountInEthers);
+        emit OnSendSeedFunds(msg.sender, account, initialAmountInEthers);
     }
     
-    function sendFunds(address payable account, uint amount) public onlyOwner shouldBeHaveFunds {
+    function sendFunds(address payable account, uint amount) public override onlyOwner shouldBeHaveFunds {
         account.transfer(amount);
         emit OnSendFunds(account, amount);
     }
