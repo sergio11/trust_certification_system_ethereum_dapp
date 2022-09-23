@@ -25,22 +25,20 @@ contract TrustCertificationContract is Ownable, ITrustCertificationContract {
        certificationCourseAddr = _certificationCourseAddr;
     }
     
-    function issueCertificate(address _recipientAddress, string memory _certificateCourseId, uint _qualification, string memory _cid, string memory _certificateHash) external override IssuerMustBeOwnerOfTheCourse(_certificateCourseId, msg.sender) returns(string memory) {
-        require(ICertificationCourseContract(certificationCourseAddr).isCertificationCourseExists(_certificateCourseId), "Certification Course with given id don't exists");
-        require(ICertificationCourseContract(certificationCourseAddr).canBeIssued(_certificateCourseId), "Certification Course with given id can not be issued");
-        uint _costOfIssuingCertificate = ICertificationCourseContract(certificationCourseAddr).getCostOfIssuingCertificate(_certificateCourseId);
-        uint _durationInHours =  ICertificationCourseContract(certificationCourseAddr).getDurationInHours(_certificateCourseId);
-        uint _recipientAddressTokens = ITokenManagementContract(tokenManagementAddr).getTokens(_recipientAddress);
+    function issueCertificate(IssueCertificateRequest memory _request) external override IssuerMustBeOwnerOfTheCourse(_request.certificateCourseId, msg.sender) returns(string memory) {
+        require(ICertificationCourseContract(certificationCourseAddr).isCertificationCourseExists(_request.certificateCourseId), "Certification Course with given id don't exists");
+        require(ICertificationCourseContract(certificationCourseAddr).canBeIssued(_request.certificateCourseId), "Certification Course with given id can not be issued");
+        uint _costOfIssuingCertificate = ICertificationCourseContract(certificationCourseAddr).getCostOfIssuingCertificate(_request.certificateCourseId);
+        uint _durationInHours =  ICertificationCourseContract(certificationCourseAddr).getDurationInHours(_request.certificateCourseId);
+        uint _recipientAddressTokens = ITokenManagementContract(tokenManagementAddr).getTokens(_request.recipientAddress);
         require(_costOfIssuingCertificate <= _recipientAddressTokens, "You do not have enough tokens to issue the certificate");
-        require(ITokenManagementContract(tokenManagementAddr).transfer(_recipientAddress, msg.sender, _costOfIssuingCertificate), "The transfer could not be made");
-        // Generate certificate id
-        string memory _certificateId = Utils.bytes32ToString(keccak256(abi.encodePacked(_recipientAddress, _certificateCourseId)));
-   
-        certificates[_certificateId] = CertificateRecord(msg.sender, _recipientAddress, _certificateCourseId, ICertificationCourseContract(certificationCourseAddr).getExpirationDate(_certificateCourseId) , _qualification, _durationInHours, _cid,  _certificateHash, block.timestamp, true, true, true);
-        certificatesByIssuer[msg.sender].push(_certificateId);
-        certificatesByRecipient[_recipientAddress].push(_certificateId);
-        emit OnNewCertificateGenerated(_certificateId, certificates[_certificateId].isVisible);
-        return _certificateId;
+        require(ITokenManagementContract(tokenManagementAddr).transfer(_request.recipientAddress, msg.sender, _costOfIssuingCertificate), "The transfer could not be made");
+        certificates[_request.id] = CertificateRecord(_request.id, msg.sender, _request.recipientAddress, _request.certificateCourseId, ICertificationCourseContract(certificationCourseAddr).getExpirationDate(_request.certificateCourseId) 
+        , _request.qualification, _durationInHours , _request.fileCid,  _request.fileCertificateHash, _request.imageCid, _request.imageCertificateHash, block.timestamp, true, true, true);
+        certificatesByIssuer[msg.sender].push(_request.id);
+        certificatesByRecipient[_request.recipientAddress].push(_request.id);
+        emit OnNewCertificateGenerated(_request.id, certificates[_request.id].isVisible);
+        return _request.id;
     }
     
     function renewCertificate(string memory _id) external override CertificateMustExist(_id)  MustBeOwnerOfTheCertificate(msg.sender, _id) CertificateMustBeExpired(_id) {
@@ -95,13 +93,8 @@ contract TrustCertificationContract is Ownable, ITrustCertificationContract {
         return myCertificates;
     }
 
-    function validateCertificateIntegrity(string memory _certificateHash) external view override returns (bool) {
-        for (uint i=0; i < certificatesByRecipient[msg.sender].length; i++) {
-           if( keccak256(abi.encodePacked(certificates[certificatesByRecipient[msg.sender][i]].certificateHash)) == keccak256(abi.encodePacked(_certificateHash)) ) {
-               return true;
-           }
-        }
-        return false;
+    function validateCertificateIntegrity(string memory _id, string  memory _fileCertificateHash, address recipientAddress) external view override CertificateMustExist(_id)  CertificateMustVisible(_id) returns (bool) {
+        return keccak256(abi.encodePacked(certificates[_id].id, certificates[_id].fileCertificateHash, certificates[_id].recipientAddress)) == keccak256(abi.encodePacked(_id, _fileCertificateHash, recipientAddress));
     }
    
     // Modifiers
