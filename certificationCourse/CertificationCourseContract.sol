@@ -29,11 +29,11 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
        tokenManagementContractAddr = _tokenManagementContractAddr;
     }
     
-    function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external override MustBeAValidCertificationAuthority(msg.sender) returns(string memory){
+    function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external override MustBeAValidCertificationAuthority(msg.sender) CertificationCourseMustNotBeDuplicated(msg.sender, _name) returns(string memory){
        return _addCertificationCourse(_name, _costOfIssuingCertificate, _durationInHours, _expirationInDays, _canBeRenewed, _costOfRenewingCertificate);
     }
 
-    function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours) external override MustBeAValidCertificationAuthority(msg.sender) returns(string memory){
+    function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours) external override MustBeAValidCertificationAuthority(msg.sender) CertificationCourseMustNotBeDuplicated(msg.sender, _name) returns(string memory){
         return _addCertificationCourse(_name, _costOfIssuingCertificate, _durationInHours, 0, false, 0);
     }
     
@@ -44,10 +44,10 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
         
         if(_costOfIssuingCertificate == 0)
             _costOfIssuingCertificate = ICertificationAuthorityContract(certificationAuthorityContractAddr).getDefaultCostOfIssuingCertificate(msg.sender);
-        // Generate Course Id
-        string memory _courseId = Utils.bytes32ToString(keccak256(abi.encodePacked(_name)));
+        // Generate Course Id ( CA address + Course Name)
+        string memory _courseId = Utils.bytes32ToString(keccak256(abi.encodePacked(msg.sender, _name)));
         // Add Certification Course
-        certificationCourse[_courseId] = CertificationCourseRecord(_name, _costOfIssuingCertificate, _costOfRenewingCertificate,
+        certificationCourse[_courseId] = CertificationCourseRecord(_courseId, _name, _costOfIssuingCertificate, _costOfRenewingCertificate,
             msg.sender, _durationInHours, _expirationInDays, _canBeRenewed,  true, true);
         certificationAuthorityCourses[msg.sender].push(_courseId);
         courseIds.push(_courseId);
@@ -178,5 +178,11 @@ contract CertificationCourseContract is Ownable, ICertificationCourseContract {
         require(!certificationCourse[_id].isEnabled, "Certification Course must be disabled");
         _;
     }
+
+    modifier CertificationCourseMustNotBeDuplicated(address _caAddress, string memory _name) {
+        require(!certificationCourse[Utils.bytes32ToString(keccak256(abi.encodePacked(msg.sender, _name)))].isExist, "Certification course must not be duplicated");
+        _;
+    }
+
     
 }

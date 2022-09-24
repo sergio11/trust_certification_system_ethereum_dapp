@@ -26,6 +26,7 @@ interface ICertificationCourseContract {
     
     // Data Structure
     struct CertificationCourseRecord {
+        string id;
         string name;
         uint costOfIssuingCertificate;
         uint costOfRenewingCertificate;

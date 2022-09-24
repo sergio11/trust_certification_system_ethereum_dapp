@@ -24,22 +24,22 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
     }
 
     // Provide Initial tokens
-    function sendInitialTokenFundsTo(address payable account, ClientType clientType) public override onlyOwner accountHasNotAlreadyProvidedWithInitialFunds(account) {
+    function sendInitialTokenFundsTo(address payable _account, ClientType _clientType) public override onlyOwner accountHasNotAlreadyProvidedWithInitialFunds(_account) {
         // Get Tokens
         uint _tokensToBeProvided;
-        if(clientType == ClientType.ADMIN) { 
+        if(_clientType == ClientType.ADMIN) { 
             _tokensToBeProvided = DEFAULT_ADMIN_TOKENS;
-        } else if (clientType == ClientType.CA) {
+        } else if (_clientType == ClientType.CA) {
             _tokensToBeProvided = DEFAULT_CA_TOKENS;
         } else {
             _tokensToBeProvided = DEFAULT_STUDENTS_TOKENS;
         }
         require (_tokensToBeProvided <= balanceOf(), "The transaction cannot be completed the requested amount of tokens cannot be satisfied");
-        require(token.transfer(account, _tokensToBeProvided), "The transfer could not be made");
-        accountsAlreadyProvidedWithInitialFunds[account] = true;
-        clients[account].tokensPurchasedCount += _tokensToBeProvided;
-        clients[account].tokensAvailables += _tokensToBeProvided;
-        clients[account].clientType = clientType;
+        require(token.transfer(_account, _tokensToBeProvided), "The transfer could not be made");
+        accountsAlreadyProvidedWithInitialFunds[_account] = true;
+        clients[_account].tokensPurchasedCount += _tokensToBeProvided;
+        clients[_account].tokensAvailables += _tokensToBeProvided;
+        clients[_account].clientType = _clientType;
     }
 
     function getTokenPriceInWei(uint _tokenCount) public override pure returns (uint) {
@@ -54,8 +54,8 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
         return token.balanceOf(msg.sender);
     }
     
-    function getTokens(address client) public override view returns (uint) {
-        return token.balanceOf(client);
+    function getTokens(address _client) public override view returns (uint) {
+        return token.balanceOf(_client);
     }
     
     function generateTokens(uint _tokenCount) external override onlyOwner() {
@@ -72,16 +72,28 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
         clients[msg.sender].tokensAvailables += _tokenCount;
     }
     
-    function transfer(address client, address recipient, uint256 amount) public override returns (bool) {
-        token.transfer(client, recipient, amount);
-        clients[client].tokensAvailables -= amount;
+    function transfer(address _client, address _recipient, uint256 _amount) public override returns (bool) {
+        token.transfer(_client, _recipient, _amount);
+        clients[_client].tokensAvailables -= _amount;
         return true;
+    }
+
+    function addTokens(address _recipient, uint256 _amount) public override onlyOwner ClientMustExist(_recipient) returns (bool) { 
+        require (_amount <= balanceOf(), "The transaction cannot be completed the requested amount of tokens cannot be satisfied");
+        require(token.transfer(_recipient, _amount), "The transfer could not be made");
+        clients[_recipient].tokensPurchasedCount += _amount;
+        clients[_recipient].tokensAvailables += _amount;
     }
 
     // Modifiers
 
     modifier accountHasNotAlreadyProvidedWithInitialFunds(address _account) {
         require(!accountsAlreadyProvidedWithInitialFunds[_account], "Account Has Already Financed");
+        _;
+    }
+
+    modifier ClientMustExist(address _address) {
+        require(clients[_address].isExist, "Client don't exists");
         _;
     }
     
