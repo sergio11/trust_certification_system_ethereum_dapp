@@ -2,6 +2,7 @@
 pragma solidity ^0.7.1;
 pragma experimental ABIEncoderV2;
 import "../ownable/Ownable.sol";
+import "../libs/Utils.sol";
 import "../tokenManagement/ITokenManagementContract.sol";
 import "./ICertificationAuthorityContract.sol";
 
@@ -19,27 +20,30 @@ contract CertificationAuthorityContract is Ownable, ICertificationAuthorityContr
        tokenManagementAddr = _tokenManagementAddr;
     }
     
-    function addCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustNotExist(msg.sender) {
-        _addCertificationAuthority(_name, _defaultCostOfIssuingCertificate);
+    function addCertificationAuthority(string memory _name, string memory _location, string memory _executiveDirector, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustNotExist(msg.sender) {
+        _addCertificationAuthority(_name,  _location, _executiveDirector, _defaultCostOfIssuingCertificate);
     }
 
-    function addCertificationAuthority(string memory _name) external override CertificationAuthorityMustNotExist(msg.sender) {
-        _addCertificationAuthority(_name, DEFAULT_COST_OF_ISSUING_CERTIFICATE);
+    function addCertificationAuthority(string memory _name, string memory _location, string memory _executiveDirector) external override CertificationAuthorityMustNotExist(msg.sender) {
+        _addCertificationAuthority(_name, _location, _executiveDirector, DEFAULT_COST_OF_ISSUING_CERTIFICATE);
     }
 
-    function _addCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) private {
+    function _addCertificationAuthority(string memory _name, string memory _location, string memory _executiveDirector, uint _defaultCostOfIssuingCertificate) private {
         uint _senderTokens = ITokenManagementContract(tokenManagementAddr).getTokens(msg.sender);
         require(_senderTokens >= ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS, "You do not have enough tokens to register as Certification Authority");
         require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, address(this), ADD_CERTIFICATION_AUTHORITY_COST_IN_TCS_TOKENS), "The transfer could not be made");
-        certificationAuthorities[msg.sender] = CertificationAuthorityRecord(_name, _defaultCostOfIssuingCertificate, true, true);
+        string memory _caId = Utils.bytes32ToString(keccak256(abi.encodePacked(msg.sender)));
+        certificationAuthorities[msg.sender] = CertificationAuthorityRecord(_caId, _name, _location, _executiveDirector, _defaultCostOfIssuingCertificate, true, true);
         authoritiesRegistered.push(msg.sender);
-        emit OnNewCertificationAuthorityCreated(msg.sender, _name);
+        emit OnNewCertificationAuthorityCreated(msg.sender, _name, _location, _executiveDirector);
     }
 
-    function updateCertificationAuthority(string memory _name, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustExist(msg.sender) {
+    function updateCertificationAuthority(string memory _name, string memory _location, string memory _executiveDirector, uint _defaultCostOfIssuingCertificate) external override CertificationAuthorityMustExist(msg.sender) {
         certificationAuthorities[msg.sender].name = _name;
+        certificationAuthorities[msg.sender].location = _location;
+        certificationAuthorities[msg.sender].executiveDirector = _executiveDirector;
         certificationAuthorities[msg.sender].defaultCostOfIssuingCertificate = _defaultCostOfIssuingCertificate;
-        emit OnCertificationAuthorityUpdated(msg.sender, _name, _defaultCostOfIssuingCertificate);
+        emit OnCertificationAuthorityUpdated(msg.sender, _name);
     }
     
     function removeCertificationAuthority(address _address) external override onlyOwner() CertificationAuthorityMustExist(_address) { 
