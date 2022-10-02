@@ -104,3 +104,8 @@ Smart contract that manages digital certificates issued by CAs to usersintereste
 Complete UML diagram of decentralized application design.
 
 <img width="auto" src="./diagrams/dapp_uml_diagram.svg" />
+
+## Visitors Count
+
+<img width="auto" src="https://profile-counter.glitch.me/trust_certification_system_ethereum_dapp/count.svg" />
+
