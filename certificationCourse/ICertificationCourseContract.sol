@@ -5,9 +5,9 @@ pragma experimental ABIEncoderV2;
 
 interface ICertificationCourseContract { 
     
-    function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours) external returns (string memory);
-    function addCertificationCourse(string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external returns (string memory);
-    function updateCertificationCourse(string memory _id, string memory _name, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external returns (string memory);
+    function addCertificationCourse(string memory _id, uint _costOfIssuingCertificate, uint _durationInHours) external;
+    function addCertificationCourse(string memory _id, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external;
+    function updateCertificationCourse(string memory _id, uint _costOfIssuingCertificate, uint _durationInHours, uint _expirationInDays, bool _canBeRenewed, uint _costOfRenewingCertificate) external;
     function removeCertificationCourse(string memory _id) external;
     function enableCertificationCourse(string memory _id) external;
     function disableCertificationCourse(string memory _id) external;
@@ -16,7 +16,7 @@ interface ICertificationCourseContract {
     function isCertificationCourseExists(string memory _id) external view returns (bool);
     function getCostOfIssuingCertificate(string memory _id) external view returns (uint);
     function getCostOfRenewingCertificate(string memory _id) external view returns (uint);
-    function getCertificateAuthorityForCourse(string memory _id) external view returns (address);
+    function getCertificateAuthorityAdminForCourse(string memory _id) external view returns (address);
     function getDurationInHours(string memory _id) external view returns (uint);
     function getExpirationDate(string memory _id) external view returns (uint);
     function getCertificateCourseDetail(string memory _id) external view returns (CertificationCourseRecord memory);
@@ -27,10 +27,9 @@ interface ICertificationCourseContract {
     // Data Structure
     struct CertificationCourseRecord {
         string id;
-        string name;
         uint costOfIssuingCertificate;
         uint costOfRenewingCertificate;
-        address certificationAuthority;
+        string certificationAuthority;
         uint durationInHours;
         uint expirationInDays;
         bool canBeRenewed;
