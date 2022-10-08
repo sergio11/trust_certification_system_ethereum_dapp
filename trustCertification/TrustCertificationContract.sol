@@ -28,11 +28,14 @@ contract TrustCertificationContract is Ownable, ITrustCertificationContract {
     function issueCertificate(IssueCertificateRequest memory _request) external override IssuerMustBeOwnerOfTheCourse(_request.certificateCourseId, msg.sender) returns(string memory) {
         require(ICertificationCourseContract(certificationCourseAddr).isCertificationCourseExists(_request.certificateCourseId), "Certification Course with given id don't exists");
         require(ICertificationCourseContract(certificationCourseAddr).canBeIssued(_request.certificateCourseId), "Certification Course with given id can not be issued");
-        uint _costOfIssuingCertificate = ICertificationCourseContract(certificationCourseAddr).getCostOfIssuingCertificate(_request.certificateCourseId);
+        uint256 _costOfIssuingCertificate = ICertificationCourseContract(certificationCourseAddr).getCostOfIssuingCertificate(_request.certificateCourseId);
         uint _durationInHours =  ICertificationCourseContract(certificationCourseAddr).getDurationInHours(_request.certificateCourseId);
         uint _recipientAddressTokens = ITokenManagementContract(tokenManagementAddr).getTokens(_request.recipientAddress);
-        require(_costOfIssuingCertificate <= _recipientAddressTokens, "You do not have enough tokens to issue the certificate");
-        require(ITokenManagementContract(tokenManagementAddr).transfer(_request.recipientAddress, msg.sender, _costOfIssuingCertificate), "The transfer could not be made");
+        require(_costOfIssuingCertificate <= _recipientAddressTokens, "Recipient have enough tokens to issue the certificate");
+        // transfer 80% (8000 bp) of `amount` to contract
+        require(ITokenManagementContract(tokenManagementAddr).transfer(_request.recipientAddress, address(this), _costOfIssuingCertificate * 8000 / 10000), "The transfer could not be made");
+        // transfer 20% (2000 bp) of `amount` to CA
+        require(ITokenManagementContract(tokenManagementAddr).transfer(_request.recipientAddress, msg.sender, _costOfIssuingCertificate * 2000 / 10000), "The transfer could not be made");
         certificates[_request.id] = CertificateRecord(_request.id, msg.sender, _request.recipientAddress, _request.certificateCourseId, ICertificationCourseContract(certificationCourseAddr).getExpirationDate(_request.certificateCourseId) 
         , _request.qualification, _durationInHours , _request.fileCid,  _request.fileCertificateHash, _request.imageCid, _request.imageCertificateHash, block.timestamp, true, true, true);
         certificatesByIssuer[msg.sender].push(_request.id);
@@ -48,7 +51,10 @@ contract TrustCertificationContract is Ownable, ITrustCertificationContract {
         uint _costOfRenewingCertificate = ICertificationCourseContract(certificationCourseAddr).getCostOfRenewingCertificate(certificate.course);
         uint _recipientAddressTokens = ITokenManagementContract(tokenManagementAddr).getTokens(msg.sender);
         require(_costOfRenewingCertificate <= _recipientAddressTokens, "You do not have enough tokens to renew the certificate");
-        require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, ICertificationCourseContract(certificationCourseAddr).getCertificateAuthorityForCourse(certificate.course), _costOfRenewingCertificate), "The transfer could not be made");
+        // transfer 80% (8000 bp) of `amount` to contract
+        require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, address(this), _costOfRenewingCertificate * 8000 / 10000), "The transfer could not be made");
+        // transfer 20% (2000 bp) of `amount` to CA
+        require(ITokenManagementContract(tokenManagementAddr).transfer(msg.sender, ICertificationCourseContract(certificationCourseAddr).getCertificateAuthorityAdminForCourse(certificate.course), _costOfRenewingCertificate * 2000 / 10000), "The transfer could not be made");
         certificate.expirationDate = ICertificationCourseContract(certificationCourseAddr).getExpirationDate(certificate.course);
         emit OnCertificateRenewed(_id, certificate.isVisible);
     }
