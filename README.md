@@ -9,9 +9,14 @@ It implements its own ERC-20 token called TCS used as a transmission currency to
 
 It has been implemented using the Solidity programming language in the Remix IDE development environment.
 
-<img align="left" src="https://img.shields.io/badge/Solidity-2E8B57?style=for-the-badge&logo=solidity&logoColor=white" />
-<img align="left" src="https://img.shields.io/badge/Ethereum-8B0000?style=for-the-badge&logo=Ethereum&logoColor=white" />
-<img align="center" src="https://img.shields.io/badge/-Smart%20Contracts-8B0000?style=for-the-badge" />
+</br>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Solidity-2E8B57?style=for-the-badge&logo=solidity&logoColor=white" />
+  <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white" />
+  <img src="https://img.shields.io/badge/Smart%20Contracts-8B0000?style=for-the-badge&logo=Ethereum&logoColor=white" />
+</p>
+
 
 ## Main Goals
 
