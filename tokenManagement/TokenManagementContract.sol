@@ -40,6 +40,7 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
         clients[_account].tokensPurchasedCount += _tokensToBeProvided;
         clients[_account].tokensAvailables += _tokensToBeProvided;
         clients[_account].clientType = _clientType;
+        clients[_account].isExist = true;
     }
 
     function getTokenPriceInWei(uint _tokenCount) public override pure returns (uint) {
@@ -62,7 +63,7 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
         token.increaseTotalSupply(_tokenCount);
     }
     
-    function buyTokens(uint _tokenCount) public override payable {
+    function buyTokens(uint _tokenCount) public override ClientMustExist(msg.sender) payable {
         require (_tokenCount <= balanceOf(), "The transaction cannot be completed the requested amount of tokens cannot be satisfied");
         uint tokenCost = getTokenPriceInWei(_tokenCount);
         require(msg.value >= tokenCost, "Insufficient amount to buy tokens");
@@ -72,9 +73,10 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
         clients[msg.sender].tokensAvailables += _tokenCount;
     }
     
-    function transfer(address _client, address _recipient, uint256 _amount) public override returns (bool) {
+    function transfer(address _client, address _recipient, uint256 _amount) public override onlyOwner() ClientMustExist(_client) ClientMustExist(_recipient) ClientHasEnoughAvailableTokens(_client, _amount) returns (bool) {
         token.transfer(_client, _recipient, _amount);
         clients[_client].tokensAvailables -= _amount;
+        clients[_recipient].tokensAvailables += _amount;
         return true;
     }
 
@@ -94,6 +96,11 @@ contract TokenManagementContract is Ownable, ITokenManagementContract {
 
     modifier ClientMustExist(address _address) {
         require(clients[_address].isExist, "Client don't exists");
+        _;
+    }
+
+    modifier ClientHasEnoughAvailableTokens(address _address, uint256 _amount) {
+        require(clients[_address].tokensAvailables >= _amount, "Client don't have enought avaliable tokens");
         _;
     }
     
