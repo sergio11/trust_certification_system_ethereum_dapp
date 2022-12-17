@@ -114,3 +114,12 @@ Complete UML diagram of decentralized application design.
 
 <img width="auto" src="https://profile-counter.glitch.me/trust_certification_system_ethereum_dapp/count.svg" />
 
+## Please Share & Star the repository to keep me motivated.
+  <a href = "https://github.com/sergio11/trust_certification_system_ethereum_dapp/stargazers">
+     <img src = "https://img.shields.io/github/stars/sergio11/trust_certification_system_ethereum_dapp" />
+  </a>
+  <a href = "https://twitter.com/SergioReact418">
+     <img src = "https://img.shields.io/twitter/url?label=follow&style=social&url=https%3A%2F%2Ftwitter.com%2FSergioReact418" />
+  </a>
+
+
