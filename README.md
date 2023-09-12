@@ -9,6 +9,8 @@ It implements its own ERC-20 token called TCS used as a transmission currency to
 
 It has been implemented using the Solidity programming language in the Remix IDE development environment.
 
+Also you can read more detail information about this project [in this Medium article](https://sanchezsanchezsergio418.medium.com/trust-certification-system-safeguarding-academic-integrity-with-blockchain-b212c78789e4).
+
 </br>
 
 <p align="center">
