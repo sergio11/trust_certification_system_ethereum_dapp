@@ -1,6 +1,6 @@
 # Trust certification system decentralized application
 
-<img width="auto" height="300" align="left" src="./tcs_logo.webp" />
+<img width="auto" height="250" align="left" src="./tcs_logo.webp" />
 
 Decentralized application designed to guarantee the transparency, traceability, security and truthfulness of the certificates issued by certification authorities.
 This DApp has been deployed in a private Ethereum-based blockchain network as part of the [Trust Certification System Platform project](https://github.com/sergio11/trust_certification_system_blockchain), therefore a faucet mechanism has been implemented as a source of ETH revenue issuance.
